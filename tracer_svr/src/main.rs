@@ -1,12 +1,11 @@
-use core::actix_web;
-use core::actix_web::{get, Responder, web::ServiceConfig};
+use actix_web::{get, web, HttpResponse, Responder};
 
 #[get("/hello")]
 async fn hello() -> impl Responder {
-    "hello world"
+    HttpResponse::Ok().body("ok")
 }
 
-fn bind_api(&mut cfg: ServiceConfig) {
+fn bind_api<'a>(cfg: &'a mut web::ServiceConfig) {
     cfg.service(hello);
 }
 
