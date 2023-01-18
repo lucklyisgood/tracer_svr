@@ -10,3 +10,4 @@ core = { path = "../core" }
 entity = { path = "../entity" }
 actix-web.workspace = true
 tracing.workspace = true
+tokio.workspace = true

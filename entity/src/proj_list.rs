@@ -1,10 +1,8 @@
-
 use sea_orm;
 use sea_orm::entity::prelude::*;
 
-
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
-#[sea_orm(table_name = "proj_list", schema_name="tracer")]
+#[sea_orm(table_name = "proj_list")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
