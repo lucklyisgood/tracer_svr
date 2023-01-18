@@ -1,5 +1,5 @@
 [workspace]
-members=['core', 'tracer_svr']
+members=['core', 'tracer_svr', 'entity']
 
 [workspace.dependencies]
 actix-web = "4.2.1"

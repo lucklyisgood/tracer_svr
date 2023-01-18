@@ -7,5 +7,6 @@ edition = "2021"
 
 [dependencies]
 core = { path = "../core" }
+entity = { path = "../entity" }
 actix-web.workspace = true
-sea-orm.workspace = true
+tracing.workspace = true

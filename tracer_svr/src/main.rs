@@ -1,14 +1,11 @@
-use actix_web::{get, web, HttpResponse, Responder};
+mod api;
+mod model;
 
-#[get("/hello")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("ok")
-}
-
-fn bind_api<'a>(cfg: &'a mut web::ServiceConfig) {
-    cfg.service(hello);
+fn on_start(state: &core::typedefs::AppState) {
+    // sync table
+    model::setup(state);
 }
 
 fn main() {
-    core::main(bind_api);
+    core::main(on_start, api::bind_api);
 }

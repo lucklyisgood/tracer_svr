@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### core
 
 - 添加核心库,负责基础模块逻辑
-- 核心库: 添加
+- 核心库: 添加log trace
 
 #### trace_svr
 
