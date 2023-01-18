@@ -1,3 +1,5 @@
 tracer 收集js报错日志并统计分析相关错误报错数据服务
 
-actix_web + sqlite + sea-orm
+http 服务框架: actix_web
+数据库: sqlite + sea-orm
+日志: tracing-subscriber

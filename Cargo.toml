@@ -4,3 +4,8 @@ members=['core', 'tracer_svr']
 [workspace.dependencies]
 actix-web = "4.2.1"
 sea-orm = { version = "^0.10.6", features = ["sqlx-sqlite", "runtime-async-std-native-tls", "macros", "debug-print",]}
+
+log = "0.4.17"
+tracing = "0.1.37"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-appender = "0.2.2"

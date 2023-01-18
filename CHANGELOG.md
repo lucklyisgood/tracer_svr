@@ -9,5 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### core
+
 - 添加核心库,负责基础模块逻辑
+- 核心库: 添加
+
+#### trace_svr
+
 - 添加 tracer_svr 库, 负责 tracer api 业务逻辑
