@@ -1,7 +1,9 @@
-use core::sea_orm::{ConnectionTrait, DbErr, Schema};
+use core::sea_orm::{ConnectionTrait, DbErr, Schema, EntityTrait};
 use core::sea_orm_migration::SchemaManager;
 
 use entity::proj_list::Entity;
+
+// static Entity_List: Vec<Box<dyn EntityTrait>> = vec![];
 
 async fn sync_schema(state: &core::typedefs::AppState) -> Result<(), DbErr> {
     let db_conn = &state.conn;
@@ -9,7 +11,8 @@ async fn sync_schema(state: &core::typedefs::AppState) -> Result<(), DbErr> {
 
     let builder = db_conn.get_database_backend();
     let schema = Schema::new(builder);
-    let tcs_entity = schema.create_table_from_entity(Entity);
+    let mut tcs_entity = schema.create_table_from_entity(Entity);
+    tcs_entity.if_not_exists();
 
     manager.create_table(tcs_entity).await?;
     Ok(())

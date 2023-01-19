@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 core = { path = "../core" }
-entity = { path = "../entity" }
+entity = { path = "./entity" }
 actix-web.workspace = true
 tracing.workspace = true
 tokio.workspace = true
