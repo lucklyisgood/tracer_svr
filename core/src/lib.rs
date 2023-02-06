@@ -1,3 +1,4 @@
+pub mod typedefs;
 pub mod config;
 pub mod database;
 pub mod log;

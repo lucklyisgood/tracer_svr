@@ -366,6 +366,9 @@ dependencies = [
  "rbatis",
  "rbdc-sqlite",
  "rbs",
+ "serde",
+ "serde_json",
+ "thiserror",
  "tokio",
  "tracing",
  "tracing-actix-web",
@@ -1769,6 +1772,8 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "core",
+ "rbatis",
+ "rbs",
  "serde",
  "serde_json",
  "thiserror",

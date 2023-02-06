@@ -5,7 +5,6 @@ use tikv_jemallocator::Jemalloc;
 #[global_allocator]
 static GLOBAL: Jemalloc = Jemalloc;
 
-mod basic;
 mod api;
 mod model;
 use std::future::Future;
