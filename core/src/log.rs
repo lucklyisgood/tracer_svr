@@ -2,6 +2,7 @@ use std::env;
 use tracing_subscriber::{EnvFilter, fmt, layer::SubscriberExt};
 use tracing_appender::non_blocking::WorkerGuard;
 use tracing_appender::rolling::RollingFileAppender;
+use tracing_subscriber::fmt::format::FmtSpan;
 
 use crate::config::{APP_CFG, LogRollingType};
 
@@ -34,10 +35,13 @@ fn init_tracing() -> WorkerGuard {
         fmt::Subscriber::builder()
             // subscriber configuration
             .with_env_filter(EnvFilter::from_default_env())
+            .with_span_events(FmtSpan::CLOSE)
             .finish()
-            // add additional writers
             .with(fmt::Layer::default().with_writer(file_writer))
+            // add additional writers
     ).expect("Unable to set global tracing subscriber");
+    // tracing
+    tracing::info!("{}", EnvFilter::from_default_env());
     tracing::debug!("tracing initialized.");
     guard
 }

@@ -3,7 +3,8 @@ use std::pin::Pin;
 
 use super::config::APP_CFG;
 use super::{config, database};
-use actix_web::{middleware, web, App, HttpServer};
+use actix_web::{web, App, HttpServer};
+use tracing_actix_web::TracingLogger;
 
 pub type BindFunc = fn(&mut web::ServiceConfig);
 
@@ -19,7 +20,7 @@ where
     tracing::info!("starting server at {}", svr_url);
     HttpServer::new(move || {
         App::new()
-            .wrap(middleware::Logger::default())
+            .wrap(TracingLogger::default())
             .configure(bind_func)
     })
     .bind(&svr_url)?

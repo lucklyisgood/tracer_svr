@@ -368,6 +368,7 @@ dependencies = [
  "rbs",
  "tokio",
  "tracing",
+ "tracing-actix-web",
  "tracing-appender",
  "tracing-subscriber",
 ]
@@ -1768,6 +1769,8 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "core",
+ "serde",
+ "serde_json",
  "thiserror",
  "tikv-jemallocator",
  "tokio",
@@ -1785,6 +1788,18 @@ dependencies = [
  "pin-project-lite",
  "tracing-attributes",
  "tracing-core",
+]
+
+[[package]]
+name = "tracing-actix-web"
+version = "0.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4082e4d81173e0b7ad3cfb71e9eaef0dd0cbb7b139fdb56394f488a3b0760b23"
+dependencies = [
+ "actix-web",
+ "pin-project",
+ "tracing",
+ "uuid",
 ]
 
 [[package]]
