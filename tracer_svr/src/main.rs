@@ -1,18 +1,26 @@
+#[cfg(not(target_env = "msvc"))]
+use tikv_jemallocator::Jemalloc;
+
+#[cfg(not(target_env = "msvc"))]
+#[global_allocator]
+static GLOBAL: Jemalloc = Jemalloc;
+
+mod basic;
 mod api;
 mod model;
 use std::future::Future;
 use std::pin::Pin;
 
-async fn on_start2(state: core::typedefs::AppState) {
+async fn on_start2() {
     tracing::info!("bind api");
-    model::setup(&state).await;
+    model::setup().await;
 }
 
 #[tokio::main]
 async fn main() {
     core::main(
-        |state: core::typedefs::AppState| -> Pin<Box<dyn Future<Output = ()>>> {
-            Box::pin(on_start2(state))
+        || -> Pin<Box<dyn Future<Output = ()>>> {
+            Box::pin(on_start2())
         },
         api::bind_api,
     )
