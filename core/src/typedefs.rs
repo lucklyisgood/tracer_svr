@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use serde::Serialize;
 use serde_json::to_string;
 use actix_web::{error, body::BoxBody, Responder, http::header::ContentType, HttpRequest, HttpResponse};
@@ -32,64 +34,26 @@ impl<T> Responder for Response<T> where T : serde::Serialize {
     }
 }
 
-#[non_exhaustive]
-#[derive(thiserror::Error, Debug)]
-pub enum Error {
-    #[error("base err: {0}")]
-    Err(String),
-
-    #[error("internal error")]
-    InternalError,
-
-    #[error("bad request params")]
-    BadClientData,
-
-    #[error("db fail: {0}")]
-    DBError(#[from] rbatis::rbdc::Error),
-}
-
 #[derive(Debug, Serialize)]
-pub struct _ErrorRespon {
-    code: u32,
-    msg: String,
+pub struct ErrorRespon {
+    pub code: u32,
+    pub msg: String,
 }
 
-use self::Error::*;
-impl Error {
-    pub fn to_body(&self) -> _ErrorRespon {
-        match self {
-            #[allow(unreachable_patterns)]
-            _ => _ErrorRespon {
-                code: self.status_code(),
-                msg: "server undefind error".into(),
-            }
-        }
-    }
-
-    pub fn status_code(&self) -> u32 {
-        match self {
-            Err(_) => 1001,
-            InternalError => 1002,
-            BadClientData => 1003,
-            DBError(_) => 2001,
-
-            #[allow(unreachable_patterns)]
-            _ => 1001,
-        }
+impl Display for ErrorRespon {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let display_str = to_string(&self).unwrap();
+        f.write_str(&format!("ErrorRespon: {}", display_str))
     }
 }
 
-impl Responder for Error {
-    type Body = BoxBody;
-    fn respond_to(self, _req: &HttpRequest) -> HttpResponse<Self::Body> {
-        let body = to_string(&self.to_body()).unwrap();
-        HttpResponse::Ok().content_type(ContentType::json()).body(body)
-    }
-}
-
-impl error::ResponseError for Error {
+impl error::ResponseError for ErrorRespon {
     fn error_response(&self) -> HttpResponse<BoxBody> {
-        let body = to_string(&self.to_body()).unwrap();
+        let body = to_string(&self).unwrap();
         HttpResponse::Ok().content_type(ContentType::json()).body(body)
+    }
+
+    fn status_code(&self) -> actix_web::http::StatusCode {
+        actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
     }
 }

@@ -20,11 +20,12 @@ actix-web = "4.2.1"
 log = "0.4.17"
 tracing = "0.1.37"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-tracing-appender = "0.2.2"
+tracing-appender = { package = "clia-tracing-appender", version = "0.2" }
 tracing-actix-web = "0.7.2"
+clia-local-offset = "0.1"
 
-rbatis = { version = "4.0.49" }
-rbs = "0.1.15"
+rbatis = { version = "4.0.49", optional = true }
+rbs = { version = "0.1.15", optional = true }
 rbdc-sqlite = { version = "0.1.15", optional = true }
 
 serde = { version = "1.0.145", features = ["derive"] }
@@ -34,4 +35,5 @@ thiserror = "1.0.37"
 
 [features]
 default = []
+db = ["dep:rbatis", "dep:rbs"]
 sqlite = ["dep:rbdc-sqlite"]

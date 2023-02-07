@@ -7,6 +7,7 @@ static GLOBAL: Jemalloc = Jemalloc;
 
 mod api;
 mod model;
+mod error;
 use std::future::Future;
 use std::pin::Pin;
 

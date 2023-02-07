@@ -17,6 +17,8 @@ pub struct LogConfig {
     pub rolling_type: LogRollingType,
     pub log_prefix_path: String,
     pub log_prefix_name: String,
+    pub log_suffix_name: String,
+    pub max_log_files: usize,
 }
 
 #[derive(Debug)]
@@ -41,11 +43,15 @@ pub fn create_log_cfg() -> LogConfig {
         _ => LogRollingType::NEVER,
     };
     let log_prefix_path = env::var("LOG_PREFIX_PATH").unwrap_or("./logs".into());
-    let log_prefix_name = env::var("LOG_PREFIX_FILE_NAME").unwrap_or("log".into());
+    let log_prefix_name = env::var("LOG_FILE_NAME").unwrap_or("core_log".into());
+    let log_suffix_name = env::var("LOG_SUFFIX_NAME").unwrap_or("log".into());
+    let max_log_files: usize = env::var("LOG_MAX_FILES").unwrap_or("10".into()).parse().unwrap_or(10);
     LogConfig {
         rolling_type,
         log_prefix_path,
         log_prefix_name,
+        log_suffix_name,
+        max_log_files,
     }
 }
 

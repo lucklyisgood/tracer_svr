@@ -14,7 +14,7 @@ where
     F2: FnOnce(&mut web::ServiceConfig) + Clone + Send + Copy + 'static,
 {
     let cfg = APP_CFG.get().expect("core: get cfg fail when create svr");
-    database::setup().await.expect("open database fail");
+    database::setup().await;
     on_start().await;
     let svr_url = format!("{}:{}", cfg.host, cfg.port);
     tracing::info!("starting server at {}", svr_url);

@@ -20,12 +20,18 @@ pub fn setup() -> WorkerGuard {
 fn create_rolling_file_appender() -> RollingFileAppender {
     let cfg = APP_CFG.get().unwrap();
     let log_cfg = &cfg.log;
-    match log_cfg.rolling_type {
-        LogRollingType::NEVER => tracing_appender::rolling::never(&log_cfg.log_prefix_path, &log_cfg.log_prefix_name),
-        LogRollingType::DAILY => tracing_appender::rolling::daily(&log_cfg.log_prefix_path, &log_cfg.log_prefix_name),
-        LogRollingType::HOURLY => tracing_appender::rolling::hourly(&log_cfg.log_prefix_path, &log_cfg.log_prefix_name),
-        LogRollingType::MINUTELY => tracing_appender::rolling::minutely(&log_cfg.log_prefix_path, &log_cfg.log_prefix_name),
-    }
+    tracing_appender::rolling::RollingFileAppender::builder()
+        .filename_prefix(&log_cfg.log_prefix_name)
+        .filename_suffix(&log_cfg.log_suffix_name)
+        .max_log_files(log_cfg.max_log_files)
+        .rotation(match log_cfg.rolling_type {
+            LogRollingType::NEVER => tracing_appender::rolling::Rotation::NEVER,
+            LogRollingType::DAILY => tracing_appender::rolling::Rotation::DAILY,
+            LogRollingType::HOURLY => tracing_appender::rolling::Rotation::HOURLY,
+            LogRollingType::MINUTELY => tracing_appender::rolling::Rotation::MINUTELY,
+        })
+        .build(&log_cfg.log_prefix_path)
+        .expect("build tracing rolling file appender fail")
 }
 
 fn init_tracing() -> WorkerGuard {

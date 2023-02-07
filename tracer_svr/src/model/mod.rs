@@ -1,30 +1,29 @@
 use tracing;
 
 #[cfg(feature="sqlite")]
-use core::database::{init_sqlite, DB};
+use core::database::db_rbatis::init_sqlite;
 
-use rbatis::{table_sync::{SqliteTableSync, TableSync}, rbdc::datetime::FastDateTime};
-use rbs::to_value;
+use core::database::db_rbatis::DB;
 
-pub mod human;
+use regex::Regex;
+use once_cell::sync::Lazy;
+use crate::error::Error;
+
+pub mod sql;
+pub mod proj_list_model;
+
+use sql::sync_table;
 
 #[cfg(feature="sqlite")]
 async fn init_db() {
     init_sqlite().await.unwrap();
 }
 
-async fn sync_table() {
-    let mut s = SqliteTableSync::default();
-    s.sql_id = " PRIMARY KEY AUTOINCREMENT NOT NULL ".to_string();
-    s.sync(
-        DB.acquire().await.unwrap(),
-        to_value!(human::Human {
-            id: Some(0),
-            create_time: Some(FastDateTime::now()),
-            name: Some("".into())
-        }),
-        "human"
-    ).await.unwrap();
+pub async fn exec_sql(table_name: &str, sql: &str) -> Result<(), Error> {
+    static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"<TABLE_NAME>").unwrap());
+    let raw_sql = RE.replace_all(sql, table_name).into_owned();
+    DB.exec(&raw_sql, vec![]).await?;
+    Ok(())
 }
 
 pub async fn setup() {

@@ -339,6 +339,36 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "clia-local-offset"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8797eb15704a9c2e81260a0371ba10ba46327f686565a9312f5ca66ba535808d"
+dependencies = [
+ "time",
+ "tz-rs",
+]
+
+[[package]]
+name = "clia-tracing-appender"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "792b815a06b5a385e8182de03db160f6a2487afa6aec9608535f661e82b87770"
+dependencies = [
+ "clia-local-offset",
+ "crossbeam-channel",
+ "symlink",
+ "thiserror",
+ "time",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "const_fn"
+version = "0.4.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fbdcdcb6d86f71c5e97409ad45898af11cbc995b4ee8112d59095a28d376c935"
+
+[[package]]
 name = "convert_case"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -360,6 +390,8 @@ name = "core"
 version = "0.1.0"
 dependencies = [
  "actix-web",
+ "clia-local-offset",
+ "clia-tracing-appender",
  "dotenv",
  "log",
  "once_cell",
@@ -372,7 +404,6 @@ dependencies = [
  "tokio",
  "tracing",
  "tracing-actix-web",
- "tracing-appender",
  "tracing-subscriber",
 ]
 
@@ -1609,6 +1640,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "symlink"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a7973cce6668464ea31f176d85b13c7ab3bba2cb3b77a2ed26abd7801688010a"
+
+[[package]]
 name = "syn"
 version = "1.0.107"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1772,8 +1809,10 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "core",
+ "once_cell",
  "rbatis",
  "rbs",
+ "regex",
  "serde",
  "serde_json",
  "thiserror",
@@ -1805,17 +1844,6 @@ dependencies = [
  "pin-project",
  "tracing",
  "uuid",
-]
-
-[[package]]
-name = "tracing-appender"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09d48f71a791638519505cefafe162606f706c25592e4bde4d97600c0195312e"
-dependencies = [
- "crossbeam-channel",
- "time",
- "tracing-subscriber",
 ]
 
 [[package]]
@@ -1873,6 +1901,15 @@ name = "typenum"
 version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "497961ef93d974e23eb6f433eb5fe1b7930b659f06d12dec6fc44a8f554c0bba"
+
+[[package]]
+name = "tz-rs"
+version = "0.6.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "33851b15c848fad2cf4b105c6bb66eb9512b6f6c44a4b13f57c53c73c707e2b4"
+dependencies = [
+ "const_fn",
+]
 
 [[package]]
 name = "ucd-trie"
