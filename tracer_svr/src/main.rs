@@ -5,6 +5,7 @@ use tikv_jemallocator::Jemalloc;
 #[global_allocator]
 static GLOBAL: Jemalloc = Jemalloc;
 
+mod utils;
 mod api;
 mod model;
 mod error;

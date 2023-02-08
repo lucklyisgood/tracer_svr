@@ -1,0 +1,38 @@
+name: Rust-Build
+
+on:
+  push:
+    tags: ["v*.*.*"]
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Toolchain info before
+        run: |
+          cargo --version --verbose
+          rustc --version
+      - name: Setup Rust
+        uses: lucklyisgood/setup-rust@v1
+        with:
+          rust-channel: nightly
+      - name: Add cross toolchain
+        run: |
+          cargo install cross
+      - name: Toolchain info
+        run: |
+          cargo --version --verbose
+          rustc --version
+          cross --version
+      - name: Build
+        run: |
+          cross +nightly build --target x86_64-unknown-linux-musl --release
