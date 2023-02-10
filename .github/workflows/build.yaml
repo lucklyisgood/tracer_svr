@@ -11,7 +11,33 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  build-stable:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Toolchain info before
+        run: |
+          cargo --version --verbose
+          rustc --version
+      - name: Setup Rust
+        uses: lucklyisgood/setup-rust@v1
+        with:
+          rust-channel: stable
+      - name: Add cross toolchain
+        run: |
+          cargo install cross
+      - name: Toolchain info
+        run: |
+          cargo --version --verbose
+          rustc --version
+          cross --version
+          rustup show
+      - name: Build
+        run: |
+          cross build --target x86_64-unknown-linux-musl --release
+  build-nightly:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +59,7 @@ jobs:
           cargo --version --verbose
           rustc --version
           cross --version
+          rustup show
       - name: Build
         run: |
-          cross +nightly build --target x86_64-unknown-linux-musl --release
+          cross build --target x86_64-unknown-linux-musl --release
